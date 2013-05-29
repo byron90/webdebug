@@ -10,8 +10,9 @@ typedef struct {
 
 //summary of a response
 typedef struct {
-    char caCode[5] ;		//response code
-    unsigned int iLenCon ;		//content-length
+    char caCode[4] ;		//response code
+    char caStat[20] ;	//statement of code
+    int iLenCon ;		//content-length
     char * pcType ;			//content type
 }RESPSUM, *PRESPSUM ;
 
@@ -19,8 +20,8 @@ typedef struct {
 typedef struct {
     char * pcRequRaw ;
     char * pcRespRaw ;
-    unsigned int iLenRequ ;	//request packet length
-    unsigned int iLenResp ;	//response packet length
+    int iLenRequ ;	//request packet length
+    int iLenResp ;	//response packet length
     PREQUSUM pRequSum ;	//summary of a request package
     PRESPSUM pRespSum ;	//summary of a response package
 }DATANODE, *PDATANODE ;

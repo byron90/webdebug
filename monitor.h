@@ -2,6 +2,8 @@
 #define MONITOR_H
 
 #include <QWidget>
+#include <QStandardItemModel>
+#include <QSplitter>
 
 namespace Ui {
 class monitor;
@@ -15,6 +17,14 @@ public:
     explicit monitor(QWidget *parent = 0);
     ~monitor();
     
+    //data
+    QStandardItemModel *mpstItmModel ;
+
+protected:
+    void customEvent(QEvent *event) ;
+private slots:
+    void on_tbwVisitLst_doubleClicked(const QModelIndex &index);
+
 private:
     Ui::monitor *ui;
 };

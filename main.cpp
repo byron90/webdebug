@@ -3,12 +3,14 @@
 #include "wddatar.h"
 
 WDDatar datar ;
+wdebug * pwdMainWin ;
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     wdebug w;
+    pwdMainWin = &w ;
+    w.mStartServer() ;
     w.show();
-    
     return a.exec();
 }

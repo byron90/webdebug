@@ -14,9 +14,9 @@ public:
 
     // begin listening on port 35791
     bool mBeginListen() ;
-    // start monitoring network data flow
+    // start the core agent
     bool mStartAgent() ;
-    // pause monitoring network data flow
+    // pause the core agent
     bool mPauseAgent() ;
 
     //data member

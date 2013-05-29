@@ -9,22 +9,25 @@ class WDSocket : public QTcpSocket
     Q_OBJECT
 public:
     explicit WDSocket(QObject *parent = 0);
+    //self-defined construct
+    explicit WDSocket(PDATANODE pdnode, QObject *parent=0 ) ;
 
     //get request from user agent
-    void mGetRequest(PDATANODE& pdnode) ;
+    bool mGetRequest() ;
     //send request to web server
-    bool mSendRequest(PDATANODE  pdnodeRequ) ;
+    bool mSendRequest() ;
     //receive response from web server
-    char * mRecvResponse() ;
+    bool mRecvResponse() ;
     //return response to user agent
-    bool mRetResponse(char * pcResponse) ;
+    bool mRetResponse() ;
+
+    //backtrack func to receive whole message
+    int mBTRece(QTcpSocket *pQTsock, char *&pcBuffer, int iLenTotal, int iLenRecvd, int iMark) ;
 
 private:
     //data
-    int miLenRecvdRequ ;	//bytes length received ---request
-    int miLenTotalRequ ;	//bytes length total one request
-    int miMarkRequ ;		//mark for different backtrack situations ---request
     QTcpSocket msock4Server ;	//tcp socket to connect to web server
+    PDATANODE mpdnode ;	//structure of socket stream
 signals:
     
 public slots:

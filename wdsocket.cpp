@@ -5,58 +5,57 @@
 WDSocket::WDSocket(QObject *parent) :
     QTcpSocket(parent)
 {
-    //initialize vars
-    miLenRecvdRequ = 0 ;
-    miLenTotalRequ = 0 ;
-    miMarkRequ = 0 ;	//0 means the first packet
-                                    //1 means no empty line in request message
-                                    //2 means message-body is in different packet
 }
 
-//get request from user agent
-//backtrack func
-//main operation is checking multiful packets in one request
-void WDSocket::mGetRequest(PDATANODE &pdnode)
+//self-defined construct
+WDSocket::WDSocket(PDATANODE pdnode,QObject *parent):
+    QTcpSocket(parent)
 {
-    char * pcRequRaw = NULL ;
-    if(miMarkRequ!=2)
+    //initialize vars
+    mpdnode = pdnode ;
+}
+
+//backtrack func
+//receive the whole http request/response message
+//args:  pcBuffer-->data buffer
+//		 iLenTotal-->total length of bytes in this request/reponse
+//		 iLenRecvd-->length of bytes received
+//		 iMark-->used as mark
+int WDSocket::mBTRece(QTcpSocket *pQTsocket, char *&pcBuffer, int iLenTotal, int iLenRecvd, int iMark)
+{
+    if(iMark!=2)
     {
         int iLength = 0 ;
-        waitForReadyRead() ;
-        iLength = bytesAvailable() ;
+        pQTsocket->waitForReadyRead() ;
+        iLength = pQTsocket->bytesAvailable() ;
         if(iLength<=0)
-            return ;
-        if(miMarkRequ==0)
+            return -1;
+        if(iMark==0)
         {//new request
-            miLenRecvdRequ += iLength ;
-            pcRequRaw = new char[iLength+1] ;
-            read(pcRequRaw, iLength) ;
-            pcRequRaw[iLength] = '\0' ;
+            iLenRecvd += iLength ;
+            pcBuffer = new char[iLength+1] ;
+            pQTsocket->read(pcBuffer, iLength) ;
         }
-        if(miMarkRequ==1)
+        else
         {//backtrack: no empty line in last call
-            char * pcLast = pcRequRaw ;
-            pcRequRaw = new char[iLength+miLenRecvdRequ+1] ;
-            read(&pcRequRaw[miLenRecvdRequ], iLength) ;
-            miLenRecvdRequ += iLength ;
-            pcRequRaw[miLenRecvdRequ] = '\0' ;
+            char * pcLast = pcBuffer ;
+            pcBuffer = new char[iLength+iLenRecvd+1] ;
+            memcpy(pcBuffer, pcLast, iLenRecvd) ;
+            pQTsocket->read(&pcBuffer[iLenRecvd], iLength) ;
+            iLenRecvd += iLength ;
             delete[] pcLast ;
         }
         //calculate the length of this request
-        char * pcRequEnd = strstr(pcRequRaw, "\r\n\r\n") ;
+        char * pcRequEnd = strstr(pcBuffer, "\r\n\r\n") ;
         if(pcRequEnd)
-        {//request has one tcp packet, maybe.....
+        {//request has only one tcp packet, maybe.....
             //check if a message-body in this request
             char * pcHeaderLen = NULL ;
-            pcHeaderLen = strstr(pcRequRaw, "Content-Length:") ;
+            pcHeaderLen = strstr(pcBuffer, "Content-Length:") ;
             if(!pcHeaderLen)
-            {//no Content-Length. packet ends
-                pdnode->pcRequRaw = pcRequRaw ;
-                pdnode->iLenRequ = miLenRecvdRequ ;
-                miMarkRequ = 0 ;
-                miLenRecvdRequ = 0 ;
-                miLenTotalRequ = 0;
-                return ;		//has no message-body
+            {
+                pcBuffer[iLenRecvd] = '\0' ;
+                return iLenRecvd ;		//has no message-body
             }
             else if(pcHeaderLen<pcRequEnd)
             {//Content-Length header not in message-body
@@ -75,70 +74,78 @@ void WDSocket::mGetRequest(PDATANODE &pdnode)
                 }
                 caLength[iCur] = '\0' ;
                 iContentLen = QString(caLength).toLong() ;
-                miLenTotalRequ = iContentLen ;
+                iLenTotal = iContentLen ;
                 //check if the whole message-body is in this packet
-                if(iContentLen == (miLenRecvdRequ-(pcRequEnd+4-pcRequRaw)))
+                if(iContentLen == (iLenRecvd-(pcRequEnd+4-pcBuffer)))
                 {
-                    pdnode->pcRequRaw = pcRequRaw ;
-                    pdnode->iLenRequ = miLenRecvdRequ ;
-                    miMarkRequ = 0 ;
-                    miLenRecvdRequ = 0 ;
-                    miLenTotalRequ = 0 ;
-                    return ;	//yes, whole message-body is here
+                    pcBuffer[iLenRecvd] = '\0' ;
+                    return iLenRecvd ;	//yes, whole message-body is here
                 }
                 else
                 {//no, message-body is in diff packet
-                    miLenRecvdRequ += iLength ;
-                    miMarkRequ = 2 ;
-                    mGetRequest(pcRequRaw);
+                    iMark = 2 ;
+                    iLenTotal = pcRequEnd + 4 - pcBuffer + iContentLen ;
+                    return mBTRece(pQTsocket, pcBuffer, iLenTotal, iLenRecvd, iMark);
                 }
             }
             else
-                return ;
+            {//string 'Content-Length' is in message body
+                pcBuffer[iLenRecvd] = '\0' ;
+                return iLenRecvd ;
+            }
         }
         else
         {//request has two tcp packets at least
-            miLenRecvdRequ += iLength ;
-            miMarkRequ = 1 ;
-            mGetRequest(pcRequRaw);
+            iMark = 1 ;
+            return mBTRece(pQTsocket, pcBuffer, iLenTotal, iLenRecvd, iMark);
         }
     }
     else
     {// message-body is in different packets
         int iLength = 0 ;
         char * pcLast ;
-        waitForReadyRead() ;
-        iLength = bytesAvailable() ;
-        pcLast = pcRequRaw ;
-        pcRequRaw = new char[iLength+miLenRecvdRequ+1] ;
-        read(&pcRequRaw[miLenRecvdRequ], iLength) ;
-        miLenRecvdRequ += iLength ;
-        pcRequRaw[miLenRecvdRequ] = '\0' ;
+        pQTsocket->waitForReadyRead() ;
+        iLength = pQTsocket->bytesAvailable() ;
+        pcLast = pcBuffer ;
+        pcBuffer = new char[iLength+iLenRecvd+1] ;
+        memcpy(pcBuffer, pcLast, iLenRecvd) ;
+        pQTsocket->read(&pcBuffer[iLenRecvd], iLength) ;
+        iLenRecvd += iLength ;
         delete[] pcLast ;
-        if(miLenRecvdRequ==miLenTotalRequ)
+        if(iLenRecvd==iLenTotal)
         {
-            pdnode->pcRequRaw = pcRequRaw ;
-            pdnode->iLenRequ = miLenRecvdRequ ;
-            miMarkRequ = 0 ;
-            miLenRecvdRequ = 0 ;
-            miLenTotalRequ = 0 ;
-            return ;
+            pcBuffer[iLenRecvd] = '\0' ;
+            return iLenTotal;
         }
         else
         {//still has more packets
-            mGetRequest(pcRequRaw);
+            return mBTRece(pQTsocket, pcBuffer, iLenTotal, iLenRecvd, iMark);
         }
     }
 }
 
-// send request to web server
-bool WDSocket::mSendRequest(PDATANODE pdnodeRequ)
+//get request from user agent
+//backtrack func
+//main operation is checking multiful packets in one request
+bool WDSocket::mGetRequest()
 {
-    if(pdnodeRequ->pRequSum->pcHost)
+    int iLenTotal = 0 ;	//total length of request message
+    int iLenRecvd = 0 ; //length of received bytes
+    int iMark = 0 ;		//to mark the backtrack state
+    mpdnode->iLenRequ = mBTRece(this, mpdnode->pcRequRaw, iLenTotal, iLenRecvd, iMark) ;
+    if(mpdnode->iLenRequ<0)
+        return false ;
+    return true ;
+}
+
+// send request to web server
+bool WDSocket::mSendRequest()
+{
+    if(mpdnode->pRequSum->pcHost)
     {//host is valid
-        msock4Server.connectToHost(psumRequ->pcHost, 80);
+        msock4Server.connectToHost(mpdnode->pRequSum->pcHost, 80);
         //try to connect to web server
-        //if the web server can not conected in 3 times
+        //if the web server can not conected after 3 times
         //then return false
         int iTime = 0 ;
         while(!msock4Server.waitForConnected() && iTime<4)
@@ -147,9 +154,11 @@ bool WDSocket::mSendRequest(PDATANODE pdnodeRequ)
         }
         if(iTime<4)
         {//connected
-            msock4Server.write(pdnodeRequ->pcRequRaw, pdnodeRequ->iLenRequ) ;
+            //forwarding client's request to origin server
+            msock4Server.write(mpdnode->pcRequRaw, mpdnode->iLenRequ) ;
         }
         else
+            //can't connect to server
             return false ;
     }
     else
@@ -157,13 +166,21 @@ bool WDSocket::mSendRequest(PDATANODE pdnodeRequ)
 }
 
 // receive response from web server
-char * WDSocket::mRecvResponse()
+bool WDSocket::mRecvResponse()
 {
-    return NULL ;
+    int iLenTotal = 0 ;	//total length of response message
+    int iLenRecvd = 0 ; //length of received bytes
+    int iMark = 0 ;		//to mark the backtrack state
+    mpdnode->iLenResp = mBTRece(&msock4Server, mpdnode->pcRespRaw, iLenTotal, iLenRecvd, iMark) ;
+    if(mpdnode->iLenResp<0)
+        return false ;
+    return true ;
 }
 
 // return response to user agent
-bool WDSocket::mRetResponse(char * pcResponse)
+bool WDSocket::mRetResponse()
 {
+    write(mpdnode->pcRespRaw, mpdnode->iLenResp) ;
+    waitForBytesWritten(30000);
     return true ;
 }

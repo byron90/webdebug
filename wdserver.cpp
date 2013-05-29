@@ -37,14 +37,24 @@ void WDServer::incomingConnection(int socketDescriptor)
     mpThrdPool->start(pWorker) ;
 }
 
-// start monitoring network data flow
-bool mStartAgent()
+// start the core agent
+bool WDServer::mStartAgent()
 {
-    return true ;
+    if(mBeginListen())
+        return true ;
+    else
+        return false ;
 }
 
-// pause monitoring network data flow
-bool mPauseAgent()
+// pause the core agent
+bool WDServer::mPauseAgent()
 {
+    try{
+        close() ;
+    }
+    catch(...)
+    {
+        return false ;
+    }
     return true ;
 }

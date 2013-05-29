@@ -10,6 +10,7 @@
 
 class WDDatar
 {
+public:
     // datas
     QList<DATANODE> mLstVisit ;	//list of visits(req and resp)
     //QMutexLocker mMtxlocLst ;		//mutex locker for mLstVisit
@@ -21,13 +22,15 @@ public:
     WDDatar();
     ~WDDatar() ;
     //add a new client request to link
-    PDATANODE mAddNewRequ(char * pcRequ) ;
+    bool mAddNewRequ(PDATANODE pdnode) ;
     //add a new server response to link
-    bool mAddNewResp(char * pcResp) ;
+    bool mAddNewResp(PDATANODE pdnode) ;
     //analyze raw client request
-    PREQUSUM mAnalyRequ(char * pcRequ) ;
+    bool mAnalyRequ(PDATANODE pdnode) ;
+    //save one dnode to list
+    int mSaveOne(PDATANODE pdnode) ;
     //analyze raw server response
-    //PRESP mAnalyResp(char * pcResp) ;
+    bool mAnalyResp(PDATANODE pdnode) ;
 
 };
 
