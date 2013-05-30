@@ -5,3 +5,8 @@ ENewVisit::ENewVisit(int iPos):
 {
     miPos = iPos ;
 }
+
+ERespAvail::ERespAvail():
+    QEvent(Type(RESP_AVAIL_COMP))
+{
+}

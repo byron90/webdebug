@@ -1,5 +1,5 @@
-#include "wdserver.h"
 #include <QMessageBox>
+#include "wdserver.h"
 
 WDServer::WDServer(QObject *parent) :
     QTcpServer(parent)
@@ -18,6 +18,7 @@ WDServer::~WDServer()
         mpThrdPool->waitForDone(3000) ;
 }
 
+//listen on port
 bool WDServer::mBeginListen()
 {
         if(!listen(QHostAddress::LocalHost, 35791))

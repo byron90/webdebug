@@ -39,7 +39,7 @@ HEADERS  += wdebug.h \
     utils/manhattanstyle.h \
     utils/fancymainwindow.h \
     utils/core_global.h \
-    compose.h
+    composer.h
 
 SOURCES += main.cpp\
         wdebug.cpp \
@@ -58,10 +58,10 @@ SOURCES += main.cpp\
     utils/minisplitter.cpp \
     utils/manhattanstyle.cpp \
     utils/fancymainwindow.cpp \
-    compose.cpp
+    composer.cpp
 
 FORMS    += wdebug.ui \
     subwin.ui \
     monitor.ui \
-    compose.ui
+    composer.ui
 

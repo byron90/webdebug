@@ -5,13 +5,14 @@
 #include "monitor.h"
 #include "wdserver.h"
 #include "fancytabwidget.h"
+#include "composer.h"
 
 namespace Ui {
 class wdebug;
 }
 
-using namespace Core ;
-using namespace Core::Internal ;
+using namespace Core;
+using namespace Core::Internal;
 
 class wdebug : public QMainWindow
 {
@@ -21,12 +22,13 @@ public:
     explicit wdebug(QWidget *parent = 0);
     ~wdebug();
     //create and start server
-    bool mStartServer() ;
+    bool mStartServer();
 
     // data
-    FancyTabWidget * mpFancyTab ;
-    WDServer *mpServer ;	// local server
+    FancyTabWidget * mpFancyTab;
+    WDServer *mpServer;	// local server
     monitor *pwinMonitor;	//child window : monitor
+    composer *pwinComposer;	//child window: composer
 
 private:
     Ui::wdebug *ui;
