@@ -29,11 +29,46 @@ typedef struct {
     PRESPSUM pRespSum ;	//summary of a response package
 }DATANODE, *PDATANODE ;
 
-//block url list management
+//block url list manager
 typedef struct {
     QStringList qslstUrl;
     QMutex qmtxLock;
     QString qstrFilePath;
 }BLOCKURL, *PBLOCKURL;
 
+//auto response node
+typedef struct st{
+    QString qstrUrl;
+    QString qstrSrcPath;
+    //overload ==
+    friend bool operator ==(st &a, const st &b)
+    {
+        return a.qstrUrl==b.qstrUrl && a.qstrSrcPath==b.qstrSrcPath;
+    }
+}AUTORNODE, *PAUTORNODE;
+
+//auto response manager
+typedef struct{
+    QList<AUTORNODE> qlstNodes;
+    QString qstrFilePath;
+    QMutex  qmtxLock;
+}AUTOR, *PAUTOR;
+
+//hide response with some code
+typedef struct{
+    bool b2;	//is 2** hided;
+    bool b302;
+    bool b304;
+    bool bnot2;
+    QMutex qmtxLock;
+}HIDECODES, *PHIDECODES;
+
+//block response with some file type
+typedef struct{
+    bool bScript;	//is script file hided;
+    bool bImg;
+    bool bCss;
+    bool bSwf;
+    QMutex qmtxLock;
+}BLOCKTYPE, *PBLOCKTYPE;
 #endif // WDDEF_H

@@ -41,7 +41,8 @@ HEADERS  += wdebug.h \
     utils/core_global.h \
     composer.h \
     filter.h \
-    dlgblockurl.h
+    dlgblockurl.h \
+    dlgautoresp.h
 
 SOURCES += main.cpp\
         wdebug.cpp \
@@ -62,12 +63,14 @@ SOURCES += main.cpp\
     utils/fancymainwindow.cpp \
     composer.cpp \
     filter.cpp \
-    dlgblockurl.cpp
+    dlgblockurl.cpp \
+    dlgautoresp.cpp
 
 FORMS    += wdebug.ui \
     subwin.ui \
     monitor.ui \
     composer.ui \
     filter.ui \
-    dlgblockurl.ui
+    dlgblockurl.ui \
+    dlgautoresp.ui
 

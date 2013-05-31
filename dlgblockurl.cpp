@@ -22,31 +22,25 @@ DlgBlockUrl::DlgBlockUrl(QWidget *parent):
     //load url list
     QStringList *pqslstUrl = &globals.mpBlockUrl->qslstUrl;
     for(int i=0; i<pqslstUrl->size(); i++)
-        mpstItmModel->setItem(i, 0, new QStandardItem(*pqslstUrls[i]));
+        mpstItmModel->setItem(i, 0, new QStandardItem((*pqslstUrl)[i]));
 }
 
 DlgBlockUrl::~DlgBlockUrl()
 {
-    //save url list
-   // QFile qdocUrls(mqstrFilePath);
-   // if(qdocUrls.open(QIODevice::WriteOnly))
-   // {
-   //     QStringList qslstUrls;
-   //     for(int i=0; i<mpstItmModel->rowCount(); i++)
-   //         qslstUrls<<mpstItmModel->item(i, 0)->text();
-   //     qdocUrls.write(qslstUrls.join("\n").toAscii());
-   //     qdocUrls.close();
-   // }
-   // else
-   //     QMessageBox::information(this, "Manage Block Urls", "Can't save url list!");
+    //***save to file
+    QFile qdocTemp(globals.mpBlockUrl->qstrFilePath);
+    qdocTemp.open(QIODevice::WriteOnly);
+    QString qstrUrls = globals.mpBlockUrl->qslstUrl.join("\n");
+    qdocTemp.write(qstrUrls.toAscii());
+    qdocTemp.close();
     delete ui;
 }
 
 //select a url to delete
 void DlgBlockUrl::on_tbwBlockUrl_doubleClicked(const QModelIndex &index)
 {
-    QString qstrUrlSel = mpstItmModel->item(index.row(), 0).text();
-    ui->ledtUrl.setText(qstrUrlSel);
+    QString qstrUrlSel = mpstItmModel->item(index.row(), 0)->text();
+    ui->ledtUrl->setText(qstrUrlSel);
     miIndexSel = index.row();
 }
 
@@ -69,5 +63,4 @@ void DlgBlockUrl::on_btnDeleteUrl_clicked()
     }
     else
         QMessageBox::information(this, "Manage Block Urls", "Please select a url to delete");
-
 }

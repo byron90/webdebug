@@ -4,7 +4,8 @@
 #include "wdglobal.h"
 
 //config datas
-QString qstrBkPath = ".\\urls_block.txt";
+QString qstrBlockUrlPath = ".\\urls_block.txt";
+QString qstrAutoRespPath = ".\\auto_response.txt";
 
 //global datas
 WDDatar datar ;
@@ -15,7 +16,8 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     //global datas
-    globals.initBlockUrl(qstrBkPath);
+    globals.initBlockUrl(qstrBlockUrlPath);
+    globals.initAutoResponse(qstrAutoRespPath);
     //main window
     wdebug w;
     pwdMainWin = &w ;
