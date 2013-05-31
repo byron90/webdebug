@@ -39,7 +39,9 @@ HEADERS  += wdebug.h \
     utils/manhattanstyle.h \
     utils/fancymainwindow.h \
     utils/core_global.h \
-    composer.h
+    composer.h \
+    filter.h \
+    dlgblockurl.h
 
 SOURCES += main.cpp\
         wdebug.cpp \
@@ -58,10 +60,14 @@ SOURCES += main.cpp\
     utils/minisplitter.cpp \
     utils/manhattanstyle.cpp \
     utils/fancymainwindow.cpp \
-    composer.cpp
+    composer.cpp \
+    filter.cpp \
+    dlgblockurl.cpp
 
 FORMS    += wdebug.ui \
     subwin.ui \
     monitor.ui \
-    composer.ui
+    composer.ui \
+    filter.ui \
+    dlgblockurl.ui
 

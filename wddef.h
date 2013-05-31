@@ -1,6 +1,9 @@
 #ifndef WDDEF_H
 #define WDDEF_H
 
+#include <QMutexLocker>
+#include <QStringList>
+
 //summary of a request
 typedef struct {
     char caMethod[15] ;	//request method
@@ -25,5 +28,12 @@ typedef struct {
     PREQUSUM pRequSum ;	//summary of a request package
     PRESPSUM pRespSum ;	//summary of a response package
 }DATANODE, *PDATANODE ;
+
+//block url list management
+typedef struct {
+    QStringList qslstUrl;
+    QMutex qmtxLock;
+    QString qstrFilePath;
+}BLOCKURL, *PBLOCKURL;
 
 #endif // WDDEF_H

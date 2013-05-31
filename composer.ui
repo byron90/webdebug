@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>981</width>
+    <width>1003</width>
     <height>618</height>
    </rect>
   </property>
@@ -23,7 +23,7 @@
     <rect>
      <x>9</x>
      <y>9</y>
-     <width>961</width>
+     <width>991</width>
      <height>198</height>
     </rect>
    </property>
@@ -504,7 +504,7 @@
     <rect>
      <x>9</x>
      <y>213</y>
-     <width>961</width>
+     <width>991</width>
      <height>401</height>
     </rect>
    </property>
@@ -520,10 +520,10 @@
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">QFrame{border: 1px solid #ccc}</string>
+    <string notr="true"/>
    </property>
    <property name="frameShape">
-    <enum>QFrame::StyledPanel</enum>
+    <enum>QFrame::Box</enum>
    </property>
    <property name="frameShadow">
     <enum>QFrame::Raised</enum>

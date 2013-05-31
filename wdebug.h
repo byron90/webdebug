@@ -6,6 +6,7 @@
 #include "wdserver.h"
 #include "fancytabwidget.h"
 #include "composer.h"
+#include "filter.h"
 
 namespace Ui {
 class wdebug;
@@ -29,6 +30,7 @@ public:
     WDServer *mpServer;	// local server
     monitor *pwinMonitor;	//child window : monitor
     composer *pwinComposer;	//child window: composer
+    filter *pwinFilter;	//child window: filter
 
 private:
     Ui::wdebug *ui;

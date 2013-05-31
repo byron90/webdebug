@@ -20,11 +20,14 @@ wdebug::wdebug(QWidget *parent) :
     //***create child widgets
     pwinMonitor = new monitor(mpFancyTab);
     pwinComposer = new composer(mpFancyTab);
+    pwinFilter = new filter(mpFancyTab);
     //***add to fancytabwidget
     mpFancyTab->insertTab(0, pwinMonitor, QIcon("img/monitor.png"),"Monitor");
     mpFancyTab->setTabEnabled(0, true);
     mpFancyTab->insertTab(1, pwinComposer,QIcon("img/composer.png"),"Composer" );
     mpFancyTab->setTabEnabled(1, true);
+    mpFancyTab->insertTab(2, pwinFilter,QIcon("img/composer.png"),"Filter" );
+    mpFancyTab->setTabEnabled(2, true);
     setDockNestingEnabled(true);
     setCorner(Qt::BottomLeftCorner, Qt::LeftDockWidgetArea);
     setCorner(Qt::BottomRightCorner, Qt::BottomDockWidgetArea);
