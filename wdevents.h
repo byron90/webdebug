@@ -3,6 +3,7 @@
 
 //custom event classes
 #include <QEvent>
+#include <QString>
 
 //new visit available --monitor
 #define NEW_VISIT_MON QEvent::User+100
@@ -23,4 +24,16 @@ public:
     ERespAvail();
 };
 
+//filter hits --filter
+#define NEW_HIT_FLT QEvent::User+102
+class EFHits:public QEvent
+{
+public:
+    EFHits(int iType, QString &qstrUrl, QString &qstrNote);
+
+    //data
+    int miType;	//filter type
+    QString mqstrUrl;	//filter url
+    QString mqstrNote;	//notes
+};
 #endif // WDEVENTS_H

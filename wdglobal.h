@@ -11,12 +11,23 @@ public:
     explicit WDGlobal(QObject *parent = 0);
 
     //init global data
+    //***logger
+    void initLogger(QString &qstrFile);
     //***block url
     void initBlockUrl(QString &qstrFile);
     //***auto response
     void initAutoResponse(QString &qstrFile);
 
+    //common func used to log
+    void writeLog(QString &qstrLogContent);
+    //***close logger
+    void closeLogger();
+
     //global data
+    //***http response template's file path
+    QString mqstrTmpRespPath;
+    //***logger
+    PLOGGER mpLogger;
     //***struct to manage block url
     PBLOCKURL mpBlockUrl;
     //***struct to manage auto responsing

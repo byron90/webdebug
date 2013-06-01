@@ -26,7 +26,7 @@ wdebug::wdebug(QWidget *parent) :
     mpFancyTab->setTabEnabled(0, true);
     mpFancyTab->insertTab(1, pwinComposer,QIcon("img/composer.png"),"Composer" );
     mpFancyTab->setTabEnabled(1, true);
-    mpFancyTab->insertTab(2, pwinFilter,QIcon("img/composer.png"),"Filter" );
+    mpFancyTab->insertTab(2, pwinFilter,QIcon("img/filter.png"),"Filter" );
     mpFancyTab->setTabEnabled(2, true);
     setDockNestingEnabled(true);
     setCorner(Qt::BottomLeftCorner, Qt::LeftDockWidgetArea);

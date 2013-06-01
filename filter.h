@@ -2,6 +2,7 @@
 #define FILTER_H
 
 #include <QWidget>
+#include <QStandardItemModel>
 #include "wdglobal.h"
 
 namespace Ui {
@@ -15,6 +16,9 @@ class filter : public QWidget
 public:
     explicit filter(QWidget *parent = 0);
     ~filter();
+
+protected:
+    void customEvent(QEvent *event);
     
 private slots:
     void on_btnAddBkUrl_clicked();
@@ -46,6 +50,10 @@ private slots:
 private:
     //specific src file of auto response
     QString mqstrSrcPath;
+    //item model
+    QStandardItemModel *mpstItmModel;
+    //filter type list
+    QStringList mqslTypes;
     Ui::filter *ui;
 };
 

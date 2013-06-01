@@ -5,6 +5,7 @@
 #include "ui_filter.h"
 #include "dlgblockurl.h"
 #include "dlgautoresp.h"
+#include "wdevents.h"
 
 extern WDGlobal globals;
 
@@ -13,11 +14,44 @@ filter::filter(QWidget *parent) :
     ui(new Ui::filter)
 {
     ui->setupUi(this);
+    //init filter type list
+    mqslTypes<<"BlockUrl";	mqslTypes<<"AutoResponse";
+    mqslTypes<<"HideCodes";	mqslTypes<<"BlockType";
+    //set data model of table view
+    mpstItmModel = new QStandardItemModel();
+    ui->tbwFilters->setModel(mpstItmModel);
+    mpstItmModel->setColumnCount(3);
+    mpstItmModel->setHorizontalHeaderItem(0, new QStandardItem(QObject::tr("Type")));
+    mpstItmModel->setHorizontalHeaderItem(1, new QStandardItem(QObject::tr("Url")));
+    mpstItmModel->setHorizontalHeaderItem(2, new QStandardItem(QObject::tr("Note")));
+    //set column width
+    ui->tbwFilters->setColumnWidth(0, 100);
+    ui->tbwFilters->setColumnWidth(1, 450);
+    ui->tbwFilters->setColumnWidth(2, 450);
+    //set table view's style
+    ui->tbwFilters->setSelectionBehavior(QAbstractItemView::SelectRows);
 }
 
 filter::~filter()
 {
     delete ui;
+}
+
+//custom event handlering center
+void filter::customEvent(QEvent *pevnt)
+{
+    int iType = pevnt->type() ;
+    if(iType==NEW_HIT_FLT)
+    {//new hit available
+        EFHits *pevntNewHit = (EFHits *)pevnt ;
+        int iRowCount = mpstItmModel->rowCount() ;
+        QString strTemp ;
+        //add a row to item model containing info about a hit
+        mpstItmModel->setItem(iRowCount, 0, new QStandardItem(mqslTypes[pevntNewHit->miType]));	//type
+        mpstItmModel->setItem(iRowCount, 1, new QStandardItem(pevntNewHit->mqstrUrl));		//url
+        mpstItmModel->setItem(iRowCount, 2, new QStandardItem(pevntNewHit->mqstrNote));		//note
+    }
+    //delete pevnt;
 }
 
 //add a new block url

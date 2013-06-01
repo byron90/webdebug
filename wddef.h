@@ -3,6 +3,13 @@
 
 #include <QMutexLocker>
 #include <QStringList>
+#include <QFile>
+
+//logger
+typedef struct{
+    QFile *pqdocLog;
+    QMutex qmtxLock;
+}LOGGER, *PLOGGER;
 
 //summary of a request
 typedef struct {

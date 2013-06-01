@@ -84,6 +84,7 @@ void composer::on_btnSend_clicked()
     mqstrRequ = new QString(ui->tedtPreview->toPlainText());
     CommThrd *pcthrdWorker = new CommThrd(mqstrRequ);
     pcthrdWorker->start();
+    delete pcthrdWorker;
 }
 
 //custom event handler
@@ -95,6 +96,8 @@ void composer::customEvent(QEvent *pevnt)
     {//response available
         ui->tedtResp->setPlainText(*mqstrRequ);
     }
+//    delete mqstrRequ;
+//    delete pevnt;
 }
 
 //worker in thread

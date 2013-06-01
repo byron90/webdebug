@@ -21,16 +21,16 @@ public:
 public:
     WDDatar();
     ~WDDatar() ;
-    //add a new client request to link
-    bool mAddNewRequ(PDATANODE pdnode) ;
-    //add a new server response to link
-    bool mAddNewResp(PDATANODE pdnode) ;
     //analyze raw client request
     bool mAnalyRequ(PDATANODE pdnode) ;
     //save one dnode to list
     int mSaveOne(PDATANODE pdnode) ;
     //analyze raw server response
     bool mAnalyResp(PDATANODE pdnode) ;
+    //add a new client request to link
+    //bool mAddNewRequ(PDATANODE pdnode) ;
+    //add a new server response to link
+    //bool mAddNewResp(PDATANODE pdnode) ;
 
 };
 

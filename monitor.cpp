@@ -17,19 +17,21 @@ monitor::monitor(QWidget *parent) :
     //set data model of table view
     mpstItmModel = new QStandardItemModel();
     ui->tbwVisitLst->setModel(mpstItmModel);
-    mpstItmModel->setColumnCount(6);
+    mpstItmModel->setColumnCount(7);
     mpstItmModel->setHorizontalHeaderItem(0, new QStandardItem(QObject::tr("Method")));
     mpstItmModel->setHorizontalHeaderItem(1, new QStandardItem(QObject::tr("Host")));
     mpstItmModel->setHorizontalHeaderItem(2, new QStandardItem(QObject::tr("Url")));
     mpstItmModel->setHorizontalHeaderItem(3, new QStandardItem(QObject::tr("Code")));
     mpstItmModel->setHorizontalHeaderItem(4, new QStandardItem(QObject::tr("Code Stat")));
+    mpstItmModel->setHorizontalHeaderItem(5, new QStandardItem(QObject::tr("content type")));
     //set column width
     ui->tbwVisitLst->setColumnWidth(0, 100);
     ui->tbwVisitLst->setColumnWidth(1, 250);
-    ui->tbwVisitLst->setColumnWidth(2, 450);
+    ui->tbwVisitLst->setColumnWidth(2, 350);
     ui->tbwVisitLst->setColumnWidth(3, 80);
     ui->tbwVisitLst->setColumnWidth(4, 100);
-    ui->tbwVisitLst->setColumnHidden(5, true);
+    ui->tbwVisitLst->setColumnWidth(5, 100);
+    ui->tbwVisitLst->setColumnHidden(6, true);
     //set table view's style
     ui->tbwVisitLst->setSelectionBehavior(QAbstractItemView::SelectRows);
     //set width of splitter's widget
@@ -60,8 +62,10 @@ void monitor::customEvent(QEvent *pevnt)
         mpstItmModel->setItem(iRowCount, 2, new QStandardItem(datar.mLstVisit[iNumInLst].pRequSum->pcUrl));		//url
         mpstItmModel->setItem(iRowCount, 3, new QStandardItem(datar.mLstVisit[iNumInLst].pRespSum->caCode));		//response code
         mpstItmModel->setItem(iRowCount, 4, new QStandardItem(datar.mLstVisit[iNumInLst].pRespSum->caStat));		//response code
-        mpstItmModel->setItem(iRowCount, 5, new QStandardItem(strTemp.setNum(iNumInLst)));		//response length
+        mpstItmModel->setItem(iRowCount, 5, new QStandardItem(datar.mLstVisit[iNumInLst].pRespSum->pcType));		//response code
+        mpstItmModel->setItem(iRowCount, 6, new QStandardItem(strTemp.setNum(iNumInLst)));		//response length
     }
+    //delete pevnt;
 }
 
 void monitor::on_tbwVisitLst_doubleClicked(const QModelIndex &index)

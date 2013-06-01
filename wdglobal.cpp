@@ -4,6 +4,7 @@
 WDGlobal::WDGlobal(QObject *parent) :
     QObject(parent)
 {
+    mpLogger = new LOGGER;
     mpBlockUrl = new BLOCKURL;
     mpAutoResp = new AUTOR;
     mpHideCodes = new HIDECODES;
@@ -14,6 +15,29 @@ WDGlobal::WDGlobal(QObject *parent) :
     //init mpBlockType struct
     mpBlockType->bScript = false; mpBlockType->bImg = false;
     mpBlockType->bCss = false; mpBlockType->bSwf = false;
+}
+
+//write data to log
+void WDGlobal::writeLog(QString &qstrLog)
+{
+    //line tail
+    qstrLog += "\n";
+    mpLogger->qmtxLock.lock();
+    mpLogger->pqdocLog->write(qstrLog.toAscii());
+    mpLogger->qmtxLock.unlock();
+}
+
+//close logger
+void WDGlobal::closeLogger()
+{
+    mpLogger->pqdocLog->close();
+}
+
+//init logger
+void WDGlobal::initLogger(QString &qstrFile)
+{
+    mpLogger->pqdocLog = new QFile(qstrFile);
+    mpLogger->pqdocLog->open(QIODevice::ReadWrite|QIODevice::Append);
 }
 
 //init block url struct

@@ -1,6 +1,10 @@
-#include "wdsocket.h"
 #include <QHostInfo>
 #include <string.h>
+#include <QDateTime>
+#include "wdsocket.h"
+#include "wdglobal.h"
+
+extern WDGlobal globals;
 
 WDSocket::WDSocket(QObject *parent) :
     QTcpSocket(parent)
@@ -134,7 +138,17 @@ bool WDSocket::mGetRequest()
     int iMark = 0 ;		//to mark the backtrack state
     mpdnode->iLenRequ = mBTRece(this, mpdnode->pcRequRaw, iLenTotal, iLenRecvd, iMark) ;
     if(mpdnode->iLenRequ<0)
-        return false ;
+    {
+        //write log
+        QString qstrLog = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+        qstrLog += " getRequest: error return -1";
+        globals.writeLog(qstrLog);
+        return false;
+    }
+    //write log
+    QString qstrLog = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+    qstrLog += " getRequest: ok";
+    globals.writeLog(qstrLog);
     return true ;
 }
 
@@ -173,7 +187,15 @@ bool WDSocket::mRecvResponse()
     int iMark = 0 ;		//to mark the backtrack state
     mpdnode->iLenResp = mBTRece(&msock4Server, mpdnode->pcRespRaw, iLenTotal, iLenRecvd, iMark) ;
     if(mpdnode->iLenResp<0)
+    {
+        QString qstrLog = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+        qstrLog += " recvResp: error return -1";
+        globals.writeLog(qstrLog);
         return false ;
+    }
+    QString qstrLog = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+    qstrLog += " recvResp: error return -1";
+    globals.writeLog(qstrLog);
     return true ;
 }
 
@@ -182,5 +204,8 @@ bool WDSocket::mRetResponse()
 {
     write(mpdnode->pcRespRaw, mpdnode->iLenResp) ;
     waitForBytesWritten(30000);
+    QString qstrLog = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+    qstrLog += " returnResp: ok";
+    globals.writeLog(qstrLog);
     return true ;
 }
