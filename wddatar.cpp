@@ -89,14 +89,20 @@ bool WDDatar::mAnalyResp(PDATANODE pdnode)
         return false ;
     qstrcpy(psumResp->caCode, byaCode.data()) ;
     //***code statement
-    QByteArray byaStat = qslstStatus[2].toAscii() ;
-    qstrcpy(psumResp->caStat, byaStat.data()) ;
-    if(byaStat.length()>=20)
+    //*** temp operation for exceptions (eg. goagent returns no code statement)
+    if(qslstStatus.length()<3)
+        qstrcpy(psumResp->caStat, "NO CODE STATEMENT") ;
+    else
     {
-        QString qstrLog = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
-        qstrLog += " analyRequ: error, status string's length is larger than 20";
-        globals.writeLog(qstrLog);
-        return false ;
+        QByteArray byaStat = qslstStatus[2].toAscii() ;
+        qstrcpy(psumResp->caStat, byaStat.data()) ;
+        if(byaStat.length()>=20)
+        {
+            QString qstrLog = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+            qstrLog += " analyRequ: error, status string's length is larger than 20";
+            globals.writeLog(qstrLog);
+            return false ;
+        }
     }
     //analyze content type
     QString qstrConType;

@@ -16,14 +16,14 @@ bool WDBreakp::checkBreak(QString &qstrMethod)
 {
     bool bRes = false;
     //GET
-    if(qstrMethod=="GET")
-    {
-        globals.mpBreakPoint->qmtxLock.lock();
-        bRes = globals.mpBreakPoint->bGet;
-        globals.mpBreakPoint->qmtxLock.unlock();
-    }
+    //if(qstrMethod=="GET")
+    //{
+    //    globals.mpBreakPoint->qmtxLock.lock();
+    //    bRes = globals.mpBreakPoint->bGet;
+    //    globals.mpBreakPoint->qmtxLock.unlock();
+    //}
     //POST
-    else if(qstrMethod=="POST")
+    if(qstrMethod=="POST")
     {
         globals.mpBreakPoint->qmtxLock.lock();
         bRes = globals.mpBreakPoint->bPost;

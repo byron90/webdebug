@@ -157,7 +157,20 @@ bool WDSocket::mSendRequest()
 {
     if(mpdnode->pRequSum->pcHost)
     {//host is valid
-        msock4Server.connectToHost(mpdnode->pRequSum->pcHost, 80);
+        //check proxy
+        QString qstrHost = "";
+        QString qstrPort = "";
+        globals.mpProxyConf->qmtxLock.lock();
+        if(globals.mpProxyConf->qstrProxyHost!="")
+        {
+            qstrHost = globals.mpProxyConf->qstrProxyHost;
+            qstrPort = globals.mpProxyConf->qstrProxyPort;
+        }
+        globals.mpProxyConf->qmtxLock.unlock();
+        if(qstrHost!="")
+            msock4Server.connectToHost(qstrHost, qstrPort.toInt());
+        else
+            msock4Server.connectToHost(mpdnode->pRequSum->pcHost, 80);
         //try to connect to web server
         //if the web server can not conected after 3 times
         //then return false

@@ -2,6 +2,7 @@
 #include "wdebug.h"
 #include "ui_wdebug.h"
 #include "utils/manhattanstyle.h"
+#include "dlgproxy.h"
 
 wdebug::wdebug(QWidget *parent) :
     QMainWindow(parent),
@@ -53,6 +54,8 @@ wdebug::wdebug(QWidget *parent) :
     connect(ui->actBreakp, SIGNAL(triggered()), mpsMapper, SLOT(map()));
     mpsMapper->setMapping(ui->actBreakp, 3);
     connect(mpsMapper, SIGNAL(mapped(int)), this, SLOT(switchTabs(int)));
+    //*** proxy
+    connect(ui->actProxy, SIGNAL(triggered()), this, SLOT(setProxy()));
 
 //    ui->horizontalLayout_chrd->addWidget(pwinMonitor);
 }
@@ -105,4 +108,11 @@ void wdebug::switchTabs(int iTabIndex)
 void wdebug::exitProg()
 {
     qApp->exit(0);
+}
+
+//create proxy settting dialog
+void wdebug::setProxy()
+{
+    DlgProxy dlgSetProxy;
+    dlgSetProxy.exec();
 }

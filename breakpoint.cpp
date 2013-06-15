@@ -203,5 +203,29 @@ void breakpoint::on_btnRunSel_clicked(bool checked)
         }
         //run it
         mplstMsg[miIndexSel]->qwaitBlock.wakeAll();
+        //clear old data
+        int iCount = mpstItmModelHead->rowCount();
+        mpstItmModelHead->removeRows(0, iCount);
+        iCount = mpstItmModelParams->rowCount();
+        mpstItmModelParams->removeRows(0, iCount);
+        mpstItmModelList->removeRow(miIndexSel);
+        mplstMsg.removeAt(miIndexSel);
+        miIndexSel = -1;
     }
+}
+
+void breakpoint::on_btnRunAll_clicked()
+{
+    //clear old data
+    int iCount = mpstItmModelHead->rowCount();
+    mpstItmModelHead->removeRows(0, iCount);
+    iCount = mpstItmModelParams->rowCount();
+    mpstItmModelParams->removeRows(0, iCount);
+    for(int i=0; i<mplstMsg.size(); i++)
+    {
+        mplstMsg[i]->qwaitBlock.wakeAll();
+        mpstItmModelList->removeRow(i);
+        mplstMsg.removeAt(i);
+    }
+    miIndexSel = -1;
 }

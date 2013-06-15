@@ -18,6 +18,10 @@ WDGlobal::WDGlobal(QObject *parent) :
     mpBlockType->bCss = false; mpBlockType->bSwf = false;
     //init mpBreakPoint struct
     mpBreakPoint->bGet = false;	mpBreakPoint->bPost = false;
+    //proxy
+    mpProxyConf = new PROXYCONF;
+    mpProxyConf->qstrProxyHost = "";
+    mpProxyConf->qstrProxyPort = "";
 }
 
 //write data to log

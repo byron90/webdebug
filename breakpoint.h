@@ -28,6 +28,8 @@ private slots:
 
     void on_btnRunSel_clicked(bool checked);
 
+    void on_btnRunAll_clicked();
+
 private:
     //data
     QStandardItemModel *mpstItmModelHead;	//table head

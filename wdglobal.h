@@ -24,6 +24,8 @@ public:
     void closeLogger();
 
     //global data
+    //***proxy
+    PPROXYCONF mpProxyConf;
     //***http response template's file path
     QString mqstrTmpRespPath;
     //***logger

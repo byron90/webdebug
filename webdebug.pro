@@ -44,7 +44,8 @@ HEADERS  += wdebug.h \
     dlgautoresp.h \
     wdfilter.h \
     breakpoint.h \
-    wdbreakp.h
+    wdbreakp.h \
+    dlgproxy.h
 
 SOURCES += main.cpp\
         wdebug.cpp \
@@ -68,7 +69,8 @@ SOURCES += main.cpp\
     dlgautoresp.cpp \
     wdfilter.cpp \
     breakpoint.cpp \
-    wdbreakp.cpp
+    wdbreakp.cpp \
+    dlgproxy.cpp
 
 FORMS    += wdebug.ui \
     monitor.ui \
@@ -76,7 +78,8 @@ FORMS    += wdebug.ui \
     filter.ui \
     dlgblockurl.ui \
     dlgautoresp.ui \
-    breakpoint.ui
+    breakpoint.ui \
+    dlgproxy.ui
 
 RC_FILE = webdebug.rc
 

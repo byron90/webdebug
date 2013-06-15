@@ -40,6 +40,7 @@ private slots:
     void switchAgent();
     void switchTabs(int iTabIndex);
     void exitProg();
+    void setProxy();
 
 private:
     Ui::wdebug *ui;

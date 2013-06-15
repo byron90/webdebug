@@ -37,6 +37,13 @@ typedef struct {
     PRESPSUM pRespSum ;	//summary of a response package
 }DATANODE, *PDATANODE ;
 
+//proxy
+typedef struct{
+    QString qstrProxyHost;
+    QString qstrProxyPort;
+    QMutex qmtxLock;
+}PROXYCONF, *PPROXYCONF;
+
 //block url list manager
 typedef struct {
     QStringList qslstUrl;
@@ -92,5 +99,6 @@ typedef struct{
     QWaitCondition qwaitBlock;
     PDATANODE pdnode;
 }BREAKMSG, *PBREAKMSG;
+
 
 #endif // WDDEF_H
