@@ -38,7 +38,21 @@ wdebug::wdebug(QWidget *parent) :
     setCorner(Qt::BottomLeftCorner, Qt::LeftDockWidgetArea);
     setCorner(Qt::BottomRightCorner, Qt::BottomDockWidgetArea);
     //bind actions
+    //*** agent switch
     connect(ui->actAgent, SIGNAL(triggered()), this, SLOT(switchAgent()));
+    //*** exit
+    connect(ui->actExit, SIGNAL(triggered()), this, SLOT(exitProg()));
+    //*** tabs
+    mpsMapper = new QSignalMapper(this);
+    connect(ui->actMonitor, SIGNAL(triggered()), mpsMapper, SLOT(map()));
+    mpsMapper->setMapping(ui->actMonitor, 0);
+    connect(ui->actComposer, SIGNAL(triggered()), mpsMapper, SLOT(map()));
+    mpsMapper->setMapping(ui->actComposer, 1);
+    connect(ui->actFilter, SIGNAL(triggered()), mpsMapper, SLOT(map()));
+    mpsMapper->setMapping(ui->actFilter, 2);
+    connect(ui->actBreakp, SIGNAL(triggered()), mpsMapper, SLOT(map()));
+    mpsMapper->setMapping(ui->actBreakp, 3);
+    connect(mpsMapper, SIGNAL(mapped(int)), this, SLOT(switchTabs(int)));
 
 //    ui->horizontalLayout_chrd->addWidget(pwinMonitor);
 }
@@ -58,6 +72,7 @@ bool wdebug::mStartServer()
         return false ;
 }
 
+//switch agent on or off
 void wdebug::switchAgent()
 {
     if(ui->actAgent->text()=="Agent on")
@@ -78,4 +93,16 @@ void wdebug::switchAgent()
         }
         ui->actAgent->setText("Agent on");
     }
+}
+
+//switch tabs
+void wdebug::switchTabs(int iTabIndex)
+{
+    mpFancyTab->setCurrentIndex(iTabIndex);
+}
+
+//exit the program
+void wdebug::exitProg()
+{
+    qApp->exit(0);
 }

@@ -2,6 +2,7 @@
 #define WDEBUG_H
 
 #include <QMainWindow>
+#include <QSignalMapper>
 #include "monitor.h"
 #include "wdserver.h"
 #include "fancytabwidget.h"
@@ -33,9 +34,12 @@ public:
     composer *pwinComposer;	//child window: composer
     filter *pwinFilter;	//child window: filter
     breakpoint *pwinBreakPnt; //child window: breakpoint
+    QSignalMapper *mpsMapper;	//signal mapper for actions
 
 private slots:
     void switchAgent();
+    void switchTabs(int iTabIndex);
+    void exitProg();
 
 private:
     Ui::wdebug *ui;
