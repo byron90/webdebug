@@ -14,9 +14,9 @@ WDDatar::~WDDatar()
 
 int WDDatar::mSaveOne(PDATANODE pdnode)
 {
-    mMtxLst.lock() ;
+    mMtxLst.lock() ;	//lock the mutex
     int iLenLst = mLstVisit.count() ;
-    mLstVisit.append(*pdnode);
+    mLstVisit.append(*pdnode);	//add new node
     mMtxLst.unlock() ;
     return iLenLst ;
 }

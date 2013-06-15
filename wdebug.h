@@ -7,6 +7,7 @@
 #include "fancytabwidget.h"
 #include "composer.h"
 #include "filter.h"
+#include "breakpoint.h"
 
 namespace Ui {
 class wdebug;
@@ -31,6 +32,10 @@ public:
     monitor *pwinMonitor;	//child window : monitor
     composer *pwinComposer;	//child window: composer
     filter *pwinFilter;	//child window: filter
+    breakpoint *pwinBreakPnt; //child window: breakpoint
+
+private slots:
+    void switchAgent();
 
 private:
     Ui::wdebug *ui;

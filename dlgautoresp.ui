@@ -134,11 +134,13 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QTableView" name="tbwAutoResps"/>
+       <widget class="QTableView" name="tbwAutoResps">
+        <property name="editTriggers">
+         <set>QAbstractItemView::NoEditTriggers</set>
+        </property>
+       </widget>
       </item>
      </layout>
-     <zorder>frame</zorder>
-     <zorder>tbwAutoResps</zorder>
     </widget>
    </item>
   </layout>

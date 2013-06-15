@@ -2,6 +2,7 @@
 #define WDDEF_H
 
 #include <QMutexLocker>
+#include <QWaitCondition>
 #include <QStringList>
 #include <QFile>
 
@@ -78,4 +79,18 @@ typedef struct{
     bool bSwf;
     QMutex qmtxLock;
 }BLOCKTYPE, *PBLOCKTYPE;
+
+//breakpoint manager
+typedef struct{
+    bool bGet;	//set breakpoint to GET request
+    bool bPost;	//set breakpoint to POST request
+    QMutex qmtxLock;
+}BREAKP, *PBREAKP;
+
+//breakpoint message struct
+typedef struct{
+    QWaitCondition qwaitBlock;
+    PDATANODE pdnode;
+}BREAKMSG, *PBREAKMSG;
+
 #endif // WDDEF_H

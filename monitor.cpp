@@ -71,7 +71,7 @@ void monitor::customEvent(QEvent *pevnt)
 void monitor::on_tbwVisitLst_doubleClicked(const QModelIndex &index)
 {
     //index the data node in list
-    int iPos = mpstItmModel->item(index.row(), 5)->text().toLong() ;
+    int iPos = mpstItmModel->item(index.row(), 6)->text().toLong() ;
     //load request and response messages to ui
     ui->textEdit->setText(datar.mLstVisit[iPos].pcRequRaw);
     ui->textEdit_2->setText(datar.mLstVisit[iPos].pcRespRaw);

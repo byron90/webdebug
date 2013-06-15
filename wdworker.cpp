@@ -2,10 +2,11 @@
 #include <QRegExp>
 #include "wdworker.h"
 #include "wddatar.h"
-#include "wdglobal.h"
+//#include "wdglobal.h"
 #include "wdevents.h"
 #include "wdebug.h"
 #include "wdfilter.h"
+#include "wdbreakp.h"
 
 extern WDDatar datar ;
 extern wdebug *pwdMainWin ;
@@ -16,17 +17,6 @@ WDWorker::WDWorker(int iSocketDes)
     miSocket = iSocketDes ;
 }
 
-//check if request url is in block url list
-//true for in, false for not in
-bool checkBlockUrl(QString &qstrUrl)
-{
-    return globals.mpBlockUrl->qslstUrl.indexOf(qstrUrl)!=-1;
-}
-
-//post message to UI in order to display filtering
-void postFilterMessage(int iType, QString &qstrUrl, QString &qstrNote)
-{
-}
 
 //delete heap space that pdnode alloc
 void deletePdnode(PDATANODE pdnode)
@@ -55,8 +45,11 @@ void deletePdnode(PDATANODE pdnode)
 //core worker
 void WDWorker::run()
 {
-    //new a filter
+    //filter class
     WDFilter fltFilter;
+    //breakpoint class
+    WDBreakp brkBreakPnt;
+    //new visit node
     PDATANODE pdnode= new DATANODE ;
     pdnode->pcRequRaw = NULL; pdnode->pcRespRaw = NULL;
     pdnode->pRequSum = NULL; pdnode->pRespSum = NULL;
@@ -96,6 +89,11 @@ void WDWorker::run()
         return;
     }
     //********************************************* end filter
+    //********************************************* breakpoint
+    if(brkBreakPnt.checkBreak(QString(pdnode->pRequSum->caMethod)))
+        //set breakpoint
+        brkBreakPnt.waitForOper(pdnode);
+    //*********************************************
     //send the request to web server
     mpSocket->mSendRequest() ;
     //receive the response from web server

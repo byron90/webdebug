@@ -9,12 +9,15 @@ WDGlobal::WDGlobal(QObject *parent) :
     mpAutoResp = new AUTOR;
     mpHideCodes = new HIDECODES;
     mpBlockType = new BLOCKTYPE;
+    mpBreakPoint = new BREAKP;
     //init mpHideCodes struct
     mpHideCodes->b2 = false; mpHideCodes->b302 = false;
     mpHideCodes->b304 = false; mpHideCodes->bnot2 = false;
     //init mpBlockType struct
     mpBlockType->bScript = false; mpBlockType->bImg = false;
     mpBlockType->bCss = false; mpBlockType->bSwf = false;
+    //init mpBreakPoint struct
+    mpBreakPoint->bGet = false;	mpBreakPoint->bPost = false;
 }
 
 //write data to log

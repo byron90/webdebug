@@ -36,6 +36,8 @@ public:
     PHIDECODES mpHideCodes;
     //***struct to manage block resp type
     PBLOCKTYPE mpBlockType;
+    //***struct to manage breakpoint
+    PBREAKP mpBreakPoint;
     
 signals:
     

@@ -1,6 +1,6 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2013-04-14T16:51:37
+# Project created by QtCreator 2013-03-14T16:51:37
 #
 #-------------------------------------------------
 
@@ -21,7 +21,6 @@ UI_DIR += ./GeneratedFiles
 RCC_DIR += ./GeneratedFiles
 
 HEADERS  += wdebug.h \
-    subwin.h \
     monitor.h \
     wdserver.h \
     wdsocket.h \
@@ -43,11 +42,12 @@ HEADERS  += wdebug.h \
     filter.h \
     dlgblockurl.h \
     dlgautoresp.h \
-    wdfilter.h
+    wdfilter.h \
+    breakpoint.h \
+    wdbreakp.h
 
 SOURCES += main.cpp\
         wdebug.cpp \
-    subwin.cpp \
     monitor.cpp \
     wdserver.cpp \
     wdsocket.cpp \
@@ -66,13 +66,17 @@ SOURCES += main.cpp\
     filter.cpp \
     dlgblockurl.cpp \
     dlgautoresp.cpp \
-    wdfilter.cpp
+    wdfilter.cpp \
+    breakpoint.cpp \
+    wdbreakp.cpp
 
 FORMS    += wdebug.ui \
-    subwin.ui \
     monitor.ui \
     composer.ui \
     filter.ui \
     dlgblockurl.ui \
-    dlgautoresp.ui
+    dlgautoresp.ui \
+    breakpoint.ui
+
+RC_FILE = webdebug.rc
 
