@@ -1,5 +1,5 @@
 ﻿A web debugger based on proxy, yes, just like fiddler2.
-![image](https://github.com/byron90/webdebug/raw/master/img/moniter.png)
+![](https://github.com/byron90/webdebug/raw/master/img/moniter.png)
 This is my work for graduation.
 Coding it just for fun and learning more things about HTTP.
 Developed with QT Creator(QT4.8.4 32bit) 
